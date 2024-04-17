@@ -1,4 +1,4 @@
-package com.example.book.store.rest.deo;
+package com.example.book.store.rest.repository;
 
 import com.example.book.store.rest.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
