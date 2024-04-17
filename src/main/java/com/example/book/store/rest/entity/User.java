@@ -1,6 +1,7 @@
 package com.example.book.store.rest.entity;
 
 import jakarta.persistence.*;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 
 import java.util.List;
 
@@ -24,6 +25,13 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
+    private String password;
+    @Column(name = "active")
+    private int active;
+
+
+
     @OneToMany(mappedBy = "user")
     private List<Book> books;
 
@@ -36,12 +44,16 @@ public class User {
 
     public User(){}
 
-    public User(String firstName, String middle_name, String lastName, String email, List<Book> books, List<Comment> comments, List<Authority> authority) {
+    public User(String firstName, String middle_name, String lastName,
+                String email, String password, int active) {
         this.firstName = firstName;
         this.middle_name = middle_name;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
+        this.active = active;
     }
+
 
     public long getId() {
         return id;
@@ -79,6 +91,22 @@ public class User {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -106,7 +134,6 @@ public class User {
     public void setAuthority(List<Authority> authority) {
         this.authority = authority;
     }
-
     @Override
     public String toString() {
         return "User{" +
