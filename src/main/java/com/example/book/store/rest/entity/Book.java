@@ -28,7 +28,7 @@ public class Book {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy ="book")
     private List<Comment> comment;
 
     public Book(){}
