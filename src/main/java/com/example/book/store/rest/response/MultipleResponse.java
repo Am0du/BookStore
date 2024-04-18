@@ -1,7 +1,10 @@
 package com.example.book.store.rest.response;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
+@Component
 public class MultipleResponse<T>{
 
     private boolean isSuccessfull;

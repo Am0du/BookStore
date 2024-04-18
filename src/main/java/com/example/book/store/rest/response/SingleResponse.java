@@ -1,5 +1,8 @@
 package com.example.book.store.rest.response;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class SingleResponse<T> {
 
     private T entity;
