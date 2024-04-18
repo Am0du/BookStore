@@ -4,10 +4,13 @@ import com.example.book.store.rest.entity.Authority;
 import com.example.book.store.rest.entity.User;
 import com.example.book.store.rest.exception.UserDoesNotHaveAuthority;
 import com.example.book.store.rest.repository.AuthorityRepository;
+import com.example.book.store.rest.response.MultipleResponse;
 import com.example.book.store.rest.response.SingleResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AuthorityServiceImpl implements AuthorityService{
@@ -15,23 +18,26 @@ public class AuthorityServiceImpl implements AuthorityService{
     private final AuthorityRepository authorityRepository;
     private final SingleResponse<Authority> singleResponse;
 
+    private final MultipleResponse<Authority> multipleResponse;
+
     private Authority authority;
 
     @Autowired
     public AuthorityServiceImpl(AuthorityRepository authorityRepository,
-                                SingleResponse<Authority> singleResponse, Authority authority){
+                                SingleResponse<Authority> singleResponse, MultipleResponse<Authority> multipleResponse, Authority authority){
         this.singleResponse = singleResponse;
         this.authorityRepository = authorityRepository;
+        this.multipleResponse = multipleResponse;
         this.authority = authority;
     }
 
     @Override
-    public SingleResponse<Authority> findAllauthority() {
+    public MultipleResponse<Authority> findAllAuthority() {
 
-        Authority response = (Authority) authorityRepository.findAll();
-        singleResponse.setEntity(response);
-        singleResponse.setIssucessfull(true);
-        return singleResponse;
+        List<Authority> response = authorityRepository.findAll();
+        multipleResponse.setEntityList(response);
+        multipleResponse.setSuccessfull(true);
+        return multipleResponse;
     }
 
     @Override
@@ -45,6 +51,7 @@ public class AuthorityServiceImpl implements AuthorityService{
     }
 
     @Override
+    @Transactional
     public void deleteAuthority(String role, User user) {
         for(Authority auth : user.getAuthority()){
             if(role.equals(auth.getRole())){
