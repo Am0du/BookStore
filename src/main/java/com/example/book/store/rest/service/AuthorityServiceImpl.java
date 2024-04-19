@@ -1,8 +1,6 @@
 package com.example.book.store.rest.service;
 
 import com.example.book.store.rest.entity.Authority;
-import com.example.book.store.rest.entity.User;
-import com.example.book.store.rest.exception.UserDoesNotHaveAuthority;
 import com.example.book.store.rest.repository.AuthorityRepository;
 import com.example.book.store.rest.response.MultipleResponse;
 import com.example.book.store.rest.response.SingleResponse;
@@ -20,15 +18,13 @@ public class AuthorityServiceImpl implements AuthorityService{
 
     private final MultipleResponse<Authority> multipleResponse;
 
-    private Authority authority;
-
     @Autowired
     public AuthorityServiceImpl(AuthorityRepository authorityRepository,
-                                SingleResponse<Authority> singleResponse, MultipleResponse<Authority> multipleResponse, Authority authority){
+                                SingleResponse<Authority> singleResponse, MultipleResponse<Authority> multipleResponse){
         this.singleResponse = singleResponse;
         this.authorityRepository = authorityRepository;
         this.multipleResponse = multipleResponse;
-        this.authority = authority;
+
     }
 
     @Override
@@ -42,9 +38,7 @@ public class AuthorityServiceImpl implements AuthorityService{
 
     @Override
     @Transactional
-    public SingleResponse<Authority> setAuthority(String role, User user) {
-        authority.setUser(user);
-        authority.setRole(role);
+    public SingleResponse<Authority> setAuthority(Authority authority) {
         singleResponse.setEntity(authorityRepository.save(authority));
         singleResponse.setIssucessfull(true);
         return singleResponse;
@@ -52,14 +46,7 @@ public class AuthorityServiceImpl implements AuthorityService{
 
     @Override
     @Transactional
-    public void deleteAuthority(String role, User user) {
-        for(Authority auth : user.getAuthority()){
-            if(role.equals(auth.getRole())){
-                authorityRepository.deleteById((int)auth.getId());
-            }
-         throw new UserDoesNotHaveAuthority("User " + user.getEmail() + " does not have role " + role);
+    public void deleteAuthority(Authority authority) {
+        authorityRepository.deleteById((int)authority.getId());
         }
     }
-
-
-}
