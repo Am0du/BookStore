@@ -77,7 +77,7 @@ public class User {
         return middleName;
     }
 
-    public void setMiddle_name(String middle_name) {
+    public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
 
@@ -130,7 +130,7 @@ public class User {
     }
 
     public List<Authority> getAuthority() {
-        return authority;
+        return authority.stream().toList();
     }
 
     public void setAuthority(List<Authority> authority) {
