@@ -11,6 +11,8 @@ public interface UserService {
     MultipleResponse<User> findAllUsers();
     SingleResponse<User> findUser();
 
+    SingleResponse<User> addUser();
+
     SingleResponse<User> updateUserPassword(User user, String password);
 
     SingleResponse<User> updateUserFirstName(User user, String name);
