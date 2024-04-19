@@ -1,5 +1,8 @@
 package com.example.book.store.rest.exception;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ErrorResponse {
 
     private int status;
