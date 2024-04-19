@@ -9,19 +9,9 @@ import java.util.Map;
 public interface UserService {
 
     MultipleResponse<User> findAllUsers();
-    SingleResponse<User> findUser();
+    SingleResponse<User> findUser(String email);
 
-    SingleResponse<User> addUser();
+    SingleResponse<User> addUser(User user);
 
-    SingleResponse<User> updateUserPassword(User user, String password);
-
-    SingleResponse<User> updateUserFirstName(User user, String name);
-
-    SingleResponse<User> updateUserSecondName(User user, String name);
-
-    SingleResponse<User> updateUserMiddleName(User user, String name);
-
-    SingleResponse<User> updateUserEmail(User user, String email);
-
-    void deleteUser(String email);
+    boolean deleteUser(User user);
 }
