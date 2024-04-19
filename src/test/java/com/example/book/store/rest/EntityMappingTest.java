@@ -44,7 +44,7 @@ public class EntityMappingTest {
         userRepository.save(user);
 
         // Create a book
-        Book book = new Book();
+        Book book = new Book("This is a book", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt " + "ut labore et dolore magna aliqua.", "genre", "www.google.com", user);
         book.setTitle("Sample Book");
         book.setDescription("Sample Description");
         book.setGenre("Sample Genre");
