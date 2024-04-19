@@ -1,6 +1,7 @@
 package com.example.book.store.rest.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -42,8 +43,12 @@ public class Authority {
         this.role = role;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserEmail() {
+        return user.getEmail();
+    }
+
+    public String getUserFirstName() {
+        return user.getFirstName();
     }
 
     public void setUser(User user) {

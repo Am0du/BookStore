@@ -1,7 +1,9 @@
 package com.example.book.store.rest.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.apache.logging.log4j.message.StringFormattedMessage;
+import java.util.stream.Collectors;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class User {
     private String firstName;
 
     @Column(name = "middle_name")
-    private String middle_name;
+    private String middleName;
 
     @Column(name = "last_name")
     private String lastName;
@@ -47,7 +49,7 @@ public class User {
     public User(String firstName, String middle_name, String lastName,
                 String email, String password, int active) {
         this.firstName = firstName;
-        this.middle_name = middle_name;
+        this.middleName = middle_name;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
@@ -71,12 +73,12 @@ public class User {
         this.firstName = firstName;
     }
 
-    public String getMiddle_name() {
-        return middle_name;
+    public String getMiddleName() {
+        return middleName;
     }
 
     public void setMiddle_name(String middle_name) {
-        this.middle_name = middle_name;
+        this.middleName = middleName;
     }
 
     public String getLastName() {
@@ -120,7 +122,7 @@ public class User {
     }
 
     public List<Comment> getComments() {
-        return comments;
+        return comments.stream().toList();
     }
 
     public void setComments(List<Comment> comments) {
@@ -139,12 +141,12 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
-                ", middle_name='" + middle_name + '\'' +
+                ", middle_name='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", books=" + books +
-                ", comments=" + comments +
-                ", authority=" + authority +
+                ", comments=" + comments.stream().toList() +
+                ", authority=" + authority.stream().toList()  +
                 '}';
     }
 }

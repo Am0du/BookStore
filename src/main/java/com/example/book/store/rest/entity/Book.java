@@ -1,5 +1,6 @@
 package com.example.book.store.rest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -82,10 +83,14 @@ public class Book {
         this.purchase_link = purchase_link;
     }
 
-    public User getUser() {
-        return user;
+    public List<Comment> getComment(){
+        return comment;
     }
 
+//    public User getUser() {
+//        return user;
+//    }
+//
     public void setUser(User user) {
         this.user = user;
     }
@@ -98,7 +103,7 @@ public class Book {
                 ", description='" + description + '\'' +
                 ", genre='" + genre + '\'' +
                 ", purchase_link='" + purchase_link + '\'' +
-                ", user=" + user +
+//                ", user=" + user.getEmail() +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.example.book.store.rest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,7 +15,6 @@ public class Comment {
     private String message;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
@@ -45,8 +45,20 @@ public class Comment {
         this.message = message;
     }
 
-    public User getUser() {
-        return user;
+//    public User getUser() {
+//        return user;
+//    }
+
+    public String getUserFirstName() {
+        return user.getFirstName();
+    }
+
+    public String getUserMiddleName() {
+        return user.getMiddleName();
+    }
+
+    public String getUserLastName() {
+        return user.getLastName();
     }
 
     public void setUser(User user) {
@@ -67,7 +79,7 @@ public class Comment {
                 "id=" + id +
                 ", message='" + message + '\'' +
                 ", user=" + user +
-                ", book=" + book +
+                ", book=" + book+
                 '}';
     }
 }
