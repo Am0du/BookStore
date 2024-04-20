@@ -40,7 +40,7 @@ public class BookServiceTest {
 
     @Test
     void findBookByGenre(){
-        when(bookRepository.findByGenre("genre")).thenReturn(book);
+        when(bookRepository.findByGenre("genre")).thenReturn(List.of(book));
         assertEquals(1, bookService.findBookByGenre("genre").getEntityList().size());
     }
 
@@ -48,7 +48,6 @@ public class BookServiceTest {
     void addBook(){
         when(bookRepository.save(book)).thenReturn(book);
         assertEquals(book, bookService.addBook(book).getEntity());
-
     }
 
     @Test
@@ -60,7 +59,8 @@ public class BookServiceTest {
     @Test
     void updateBook(){
         when(bookRepository.save(book)).thenReturn(book);
-        assertEquals(book, bookService.updateBook("Title is a book").getEntity());
+        book.setTitle("This title");
+        assertEquals(book, bookService.updateBook(book).getEntity());
     }
 
     @Test
