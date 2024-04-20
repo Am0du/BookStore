@@ -7,12 +7,14 @@ import com.example.book.store.rest.response.SingleResponse;
 public interface BookService {
 
     MultipleResponse<Book> findAllBooks();
-    MultipleResponse<Book> findBookByGenre();
-    SingleResponse<Book> addBook();
+    MultipleResponse<Book> findBookByGenre(String genre);
+    SingleResponse<Book> addBook(Book book);
 
-    SingleResponse<Book> findBookByTitle(String query);
+    SingleResponse<Book> findBookByTitle(String title);
 
-    SingleResponse<Book> updateBook(String title);
+    SingleResponse<Book> updateBook(Book book);
+
+    void deleteBook(Book book);
 
 
 }

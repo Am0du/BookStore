@@ -1,11 +1,13 @@
 package com.example.book.store.rest.service;
 
+import com.example.book.store.rest.entity.Book;
 import com.example.book.store.rest.entity.Comment;
+import com.example.book.store.rest.entity.User;
 import com.example.book.store.rest.response.SingleResponse;
 
 public interface CommentService {
 
-    SingleResponse<Comment> addComment(String title);
+    SingleResponse<Comment> addComment(Comment comment);
 
-    void deleteComment(String title);
+    void deleteComment(Comment comment);
 }
