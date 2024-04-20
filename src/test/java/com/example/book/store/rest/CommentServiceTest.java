@@ -25,7 +25,7 @@ public class CommentServiceTest {
     User user = new User("John", "Johnson", "Doe",
             "John.deo@example.com", "password", 1);
 
-      Book book = new Book("This is a book",
+    Book book = new Book("This is a book",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt " +
                     "ut labore et dolore magna aliqua.", "genre", "www.google.com", user);
 
@@ -34,7 +34,7 @@ public class CommentServiceTest {
 
     @Test
     void addComment(){
-        when(commentRepository.save(commentRepository.save(comment))).thenReturn(comment);
+        when(commentRepository.save(comment)).thenReturn(comment);
         assertEquals(comment, commentService.addComment(comment).getEntity());
 
     }
