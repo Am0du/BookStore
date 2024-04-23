@@ -1,9 +1,8 @@
 package com.example.book.store.rest.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import org.apache.logging.log4j.message.StringFormattedMessage;
-import java.util.stream.Collectors;
+
+import java.util.Collection;
 
 import java.util.List;
 
@@ -122,15 +121,15 @@ public class User {
     }
 
     public List<Comment> getComments() {
-        return comments.stream().toList();
+        return comments;
     }
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
-    public List<Authority> getAuthority() {
-        return authority.stream().toList();
+    public Collection<Authority> getAuthority() {
+        return authority;
     }
 
     public void setAuthority(List<Authority> authority) {
