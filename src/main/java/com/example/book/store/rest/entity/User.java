@@ -116,7 +116,6 @@ public class User {
     public List<Book> getBooks() {
         if(books == null) {
             books = new ArrayList<Book>();
-            return books.stream().toList();
         }
         return books;
     }
@@ -139,7 +138,6 @@ public class User {
     public List<Authority> getAuthority() {
         if(authority == null){
             authority = new ArrayList<Authority>();
-            return authority;
         }
         return authority;
     }
