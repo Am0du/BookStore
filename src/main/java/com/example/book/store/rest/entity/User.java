@@ -1,7 +1,10 @@
 package com.example.book.store.rest.entity;
 
+import com.example.book.store.rest.repository.AuthorityRepository;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import java.util.List;
@@ -33,13 +36,13 @@ public class User {
 
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Book> books;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Authority> authority;
 
 
@@ -113,6 +116,10 @@ public class User {
     }
 
     public List<Book> getBooks() {
+        if(books == null) {
+            books = new ArrayList<Book>();
+            return books.stream().toList();
+        }
         return books;
     }
 
@@ -121,6 +128,9 @@ public class User {
     }
 
     public List<Comment> getComments() {
+        if(comments == null) {
+            comments = new ArrayList<Comment>();
+        }
         return comments;
     }
 
@@ -128,13 +138,19 @@ public class User {
         this.comments = comments;
     }
 
-    public Collection<Authority> getAuthority() {
+    public List<Authority> getAuthority() {
+        if(authority == null){
+            authority = new ArrayList<Authority>();
+            return authority;
+        }
         return authority;
     }
 
-    public void setAuthority(List<Authority> authority) {
+    public void setAuthority(ArrayList<Authority> authority) {
         this.authority = authority;
+
     }
+
     @Override
     public String toString() {
         return "User{" +
@@ -144,8 +160,8 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", books=" + books +
-                ", comments=" + comments.stream().toList() +
-                ", authority=" + authority.stream().toList()  +
+                ", comments=" + comments +
+                ", authority=" + authority  +
                 '}';
     }
 }
