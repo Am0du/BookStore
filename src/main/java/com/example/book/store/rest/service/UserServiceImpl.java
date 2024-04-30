@@ -14,14 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,7 +45,6 @@ public class UserServiceImpl implements UserService {
         this.multipleResponse = multipleResponse;
         this.singleResponse = singleResponse;
         this.passwordEncoder = passwordEncoder;
-
     }
 
     private MultipleResponse<User> multipleResponse(List<User> user, boolean success){
@@ -117,6 +113,28 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
+    @Override
+    @Transactional
+    public  SingleResponse<User> addAuthorityToUser(String userEmail, Authority authority) {
+        User user = userRepository.findByEmail(userEmail);
+        authority.setUser(user);
+        user.getAuthority().add(authority);
+        userRepository.save(user);
+        return singleResponse(userRepository.save(user), true);
+    }
+
+    @Override
+    @Transactional
+    public  SingleResponse<User> addBookToUser(String userEmail, Book book) {
+        User user = userRepository.findByEmail(userEmail);
+        book.setUser(user);
+        user.getBooks().add(book);
+        userRepository.save(user);
+        return singleResponse(userRepository.save(user), true);
+    }
+
+
 
     @Override
     @Transactional
