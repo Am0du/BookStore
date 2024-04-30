@@ -34,8 +34,6 @@ public class User {
     @Column(name = "active")
     private int active;
 
-
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Book> books;
 
