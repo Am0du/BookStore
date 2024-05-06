@@ -50,7 +50,7 @@ public class UserServiceTest {
     @Test
     void deleteUser(){
         doNothing().when(userRepository).delete(user);
-        userService.deleteUser(user);
+        userService.deleteUser(user.getEmail());
         verify(userRepository).delete(user);
 
     }
