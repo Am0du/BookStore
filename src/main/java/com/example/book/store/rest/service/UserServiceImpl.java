@@ -58,6 +58,11 @@ public class UserServiceImpl implements UserService {
         singleResponse.setEntity(user);
         return singleResponse;
     }
+
+    private String encryptPassword(String password){
+        return passwordEncoder.encode(password);
+    }
+
     @Override
     public MultipleResponse<User> findAllUsers() {
         return multipleResponse(userRepository.findAll(), true);
@@ -77,7 +82,7 @@ public class UserServiceImpl implements UserService {
     public SingleResponse<User> addUser(User user) {
         try {
             User newUser = userRepository.save(user);
-            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            newUser.setPassword(encryptPassword(newUser.getPassword()));
             return singleResponse(newUser, true);
         }catch (Exception  exc){
             throw new UserDataNotComplete(exc.getMessage());
@@ -106,7 +111,7 @@ public class UserServiceImpl implements UserService {
             existingUser.setFirstName(user.getFirstName() != null ? user.getFirstName() : existingUser.getFirstName());
             existingUser.setLastName(user.getLastName() != null ? user.getLastName() : existingUser.getLastName());
             existingUser.setMiddleName(user.getMiddleName() != null ? user.getMiddleName() : existingUser.getMiddleName());
-            existingUser.setPassword(user.getPassword() != null ? user.getPassword() : existingUser.getPassword());
+            existingUser.setPassword(user.getPassword() != null ? encryptPassword(user.getPassword()) : existingUser.getPassword());
             return  singleResponse(userRepository.save(existingUser), true);
         }catch (Exception exc){
             throw new UserNotFound("No user with " + user.getEmail() + "found");
