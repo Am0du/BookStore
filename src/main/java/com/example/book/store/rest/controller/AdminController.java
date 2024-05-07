@@ -5,6 +5,7 @@ import com.example.book.store.rest.entity.Authority;
 import com.example.book.store.rest.entity.User;
 import com.example.book.store.rest.exception.UserNotFound;
 import com.example.book.store.rest.response.SingleResponse;
+import com.example.book.store.rest.response.UserResponse;
 import com.example.book.store.rest.service.AuthorityService;
 import com.example.book.store.rest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/admin/assign-role")
-    public ResponseEntity<SingleResponse<User>> assignRole(@RequestBody RoleAssigningDTO roleAssigningDTO){
+    public ResponseEntity<UserResponse> assignRole(@RequestBody RoleAssigningDTO roleAssigningDTO){
         Authority authority = new Authority();
         authority.setRole(roleAssigningDTO.getRole());
         return ResponseEntity.ok(userService.addAuthorityToUser(roleAssigningDTO.getEmail(), authority));
@@ -37,7 +38,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/admin/delete-user-role")
     public ResponseEntity<?> deleteUserRole(@RequestBody RoleAssigningDTO roleAssigningDTO){
-        User user = userService.findUser(roleAssigningDTO.getEmail()).getEntity();
+        UserResponse user = userService.findUser(roleAssigningDTO.getEmail());
 
         for(Authority authority : user.getAuthority()){
             if(authority.getRole().equals(roleAssigningDTO.getRole())) {
