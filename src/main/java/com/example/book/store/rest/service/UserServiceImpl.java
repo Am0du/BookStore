@@ -6,8 +6,8 @@ import com.example.book.store.rest.entity.User;
 import com.example.book.store.rest.exception.UserDataNotComplete;
 import com.example.book.store.rest.exception.UserNotFound;
 import com.example.book.store.rest.repository.UserRepository;
-import com.example.book.store.rest.response.MultipleResponse;
 import com.example.book.store.rest.response.SingleResponse;
+import com.example.book.store.rest.response.UserResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,31 +26,24 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-    private MultipleResponse<User> multipleResponse;
-
     private SingleResponse<User> singleResponse;
 
     private PasswordEncoder passwordEncoder;
+
+    private UserResponse userResponse;
 
     public UserServiceImpl(){}
 
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           MultipleResponse<User> multipleResponse,
                            SingleResponse<User> singleResponse,
-                           PasswordEncoder passwordEncoder){
+                           PasswordEncoder passwordEncoder, UserResponse userResponse){
 
         this.userRepository = userRepository;
-        this.multipleResponse = multipleResponse;
         this.singleResponse = singleResponse;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    private MultipleResponse<User> multipleResponse(List<User> user, boolean success){
-        multipleResponse.setEntityList(user);
-        multipleResponse.setSuccessfull(success);
-        return multipleResponse;
+        this.userResponse = userResponse;
     }
 
     private SingleResponse<User> singleResponse(User user, boolean success){
@@ -59,19 +52,52 @@ public class UserServiceImpl implements UserService {
         return singleResponse;
     }
 
+    private UserResponse userResponse(User user){
+        userResponse.setFirstName(user.getFirstName());
+        userResponse.setMiddleName(user.getMiddleName());
+        userResponse.setLastName(user.getLastName());
+        userResponse.setAuthority(user.getAuthority());
+        userResponse.setBooks(user.getBooks());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setId(user.getId());
+        userResponse.setComments(user.getComments());
+        userResponse.setActive(user.getActive());
+        return userResponse;
+    }
+
+    private List<UserResponse> userResponseMultipleResponse(List<User> users) {
+        List <UserResponse> userResponses = new ArrayList<UserResponse>();
+        for(User user: users) {
+            userResponse.setFirstName(user.getFirstName());
+            userResponse.setMiddleName(user.getMiddleName());
+            userResponse.setLastName(user.getLastName());
+            userResponse.setAuthority(user.getAuthority());
+            userResponse.setBooks(user.getBooks());
+            userResponse.setEmail(user.getEmail());
+            userResponse.setId(user.getId());
+            userResponse.setComments(user.getComments());
+            userResponse.setActive(user.getActive());
+
+            userResponses.add(userResponse);
+        }
+
+        return userResponses;
+    }
     private String encryptPassword(String password){
         return passwordEncoder.encode(password);
     }
 
     @Override
-    public MultipleResponse<User> findAllUsers() {
-        return multipleResponse(userRepository.findAll(), true);
+    public List<UserResponse> findAllUsers() {
+        return userResponseMultipleResponse(userRepository.findAll());
     }
 
     @Override
-    public SingleResponse<User> findUser(String email) {
+    public UserResponse findUser(String email) {
         try {
-            return singleResponse(userRepository.findByEmail(email), true);
+            User user = userRepository.findByEmail(email);
+
+            return userResponse(userRepository.findByEmail(email));
         }catch (EntityNotFoundException exc){
             throw new UserNotFound("User with email address");
         }
@@ -79,11 +105,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public SingleResponse<User> addUser(User user) {
+    public UserResponse addUser(User user) {
         try {
             User newUser = userRepository.save(user);
             newUser.setPassword(encryptPassword(newUser.getPassword()));
-            return singleResponse(newUser, true);
+            return userResponse(newUser);
         }catch (Exception  exc){
             throw new UserDataNotComplete(exc.getMessage());
         }
@@ -105,14 +131,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public SingleResponse<User> editUser(User user) {
+    public UserResponse editUser(User user) {
         try {
             User existingUser = userRepository.findByEmail(user.getEmail());
             existingUser.setFirstName(user.getFirstName() != null ? user.getFirstName() : existingUser.getFirstName());
             existingUser.setLastName(user.getLastName() != null ? user.getLastName() : existingUser.getLastName());
             existingUser.setMiddleName(user.getMiddleName() != null ? user.getMiddleName() : existingUser.getMiddleName());
             existingUser.setPassword(user.getPassword() != null ? encryptPassword(user.getPassword()) : existingUser.getPassword());
-            return  singleResponse(userRepository.save(existingUser), true);
+            return  userResponse(userRepository.save(existingUser));
         }catch (Exception exc){
             throw new UserNotFound("No user with " + user.getEmail() + "found");
         }
@@ -121,22 +147,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public  SingleResponse<User> addAuthorityToUser(String userEmail, Authority authority) {
+    public UserResponse addAuthorityToUser(String userEmail, Authority authority) {
         User user = userRepository.findByEmail(userEmail);
         authority.setUser(user);
         user.getAuthority().add(authority);
         userRepository.save(user);
-        return singleResponse(userRepository.save(user), true);
+        return userResponse(userRepository.save(user));
     }
 
     @Override
     @Transactional
-    public  SingleResponse<User> addBookToUser(String userEmail, Book book) {
+    public UserResponse addBookToUser(String userEmail, Book book) {
         User user = userRepository.findByEmail(userEmail);
         book.setUser(user);
         user.getBooks().add(book);
         userRepository.save(user);
-        return singleResponse(userRepository.save(user), true);
+        return userResponse(userRepository.save(user));
     }
 
 
