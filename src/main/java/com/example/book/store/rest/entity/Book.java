@@ -1,6 +1,5 @@
 package com.example.book.store.rest.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -32,7 +31,16 @@ public class Book {
     @OneToMany(mappedBy ="book")
     private List<Comment> comment;
 
-    public Book(){}
+    public Book(){
+    }
+
+    public Book(String title, String description, String genre, String purchase_link, User user){
+        this.title = title;
+        this.description = description;
+        this.genre = genre;
+        this.purchase_link = purchase_link;
+        this.user = user;
+    }
 
     public Book(long id, String title, String description, String genre, String purchase_link, User user) {
         this.id = id;
