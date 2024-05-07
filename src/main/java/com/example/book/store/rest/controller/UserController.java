@@ -36,7 +36,7 @@ public class UserController {
 
     private final JwtAuthResponse jwtAuthResponse;
     private final JwtTokenProvider jwtTokenProvider;
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+//    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 
     @Autowired
@@ -90,7 +90,7 @@ public class UserController {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/users/{email}")
     public ResponseEntity<SingleResponse<User>> user(@PathVariable String email){
         return  ResponseEntity.ok(userService.findUser(email));
