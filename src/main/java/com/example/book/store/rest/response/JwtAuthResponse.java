@@ -1,5 +1,8 @@
 package com.example.book.store.rest.response;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class JwtAuthResponse {
 
     private String accessToken;
