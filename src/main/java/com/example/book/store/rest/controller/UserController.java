@@ -12,6 +12,8 @@ import com.example.book.store.rest.security.SignUp;
 import com.example.book.store.rest.service.AuthService;
 import com.example.book.store.rest.service.AuthorityService;
 import com.example.book.store.rest.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,23 +31,21 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private  final AuthorityService authorityService;
+    private final AuthenticationManager authenticationManager;
+    private final AuthService authService;
 
-    private AuthenticationManager authenticationManager;
-    private AuthService authService;
+    private final JwtAuthResponse jwtAuthResponse;
+    private final JwtTokenProvider jwtTokenProvider;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    private JwtAuthResponse jwtAuthResponse;
-    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public UserController(UserService userService,
-                          AuthorityService authorityService,
                           AuthenticationManager authenticationManager,
                           AuthService authService,
                           JwtAuthResponse jwtAuthResponse,
                           JwtTokenProvider jwtTokenProvider){
         this.userService = userService;
-        this.authorityService = authorityService;
         this.authenticationManager = authenticationManager;
         this.authService = authService;
         this.jwtAuthResponse = jwtAuthResponse;
@@ -106,7 +106,9 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/users")
     public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") String headerValue){
-        userService.deleteUser(jwtTokenProvider.getEmail(headerValue));
+        userService.deleteUser(jwtTokenProvider
+                .getEmail(headerValue
+                        .substring(7)));
         return ResponseEntity.ok("User has been deleted");
     }
 }
