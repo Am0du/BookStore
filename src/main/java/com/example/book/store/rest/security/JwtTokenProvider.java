@@ -29,7 +29,6 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 
-
     public String generateToken(Authentication authentication){
         UserDetails user = (UserDetails) authentication.getPrincipal();
         Date currentDate = new Date();
