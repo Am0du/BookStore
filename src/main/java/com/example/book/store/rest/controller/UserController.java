@@ -6,6 +6,7 @@ import com.example.book.store.rest.entity.User;
 import com.example.book.store.rest.response.JwtAuthResponse;
 import com.example.book.store.rest.response.MultipleResponse;
 import com.example.book.store.rest.response.SingleResponse;
+import com.example.book.store.rest.response.UserResponse;
 import com.example.book.store.rest.security.JwtTokenProvider;
 import com.example.book.store.rest.security.SignIn;
 import com.example.book.store.rest.security.SignUp;
@@ -73,7 +74,7 @@ public class UserController {
         newUser.setLastName(signup.getLastName());
         newUser.setPassword(signup.getPassword());
         newUser.setEmail(signup.getEmail());
-        User user = userService.addUser(newUser).getEntity();
+        UserResponse user = userService.addUser(newUser);
 
         Authority authority = new Authority();
         authority.setRole("ROLE_USER");
@@ -83,23 +84,23 @@ public class UserController {
 
     }
 
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     @GetMapping("/users")
-    public MultipleResponse<User> getalluser(){
+    public List<UserResponse> getalluser(){
         return userService.findAllUsers();
 
     }
 
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     @GetMapping("/users/{email}")
-    public ResponseEntity<SingleResponse<User>> user(@PathVariable String email){
+    public ResponseEntity<UserResponse> user(@PathVariable String email){
         return  ResponseEntity.ok(userService.findUser(email));
 
     }
 
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/users")
-    public ResponseEntity<SingleResponse<User>> editUser(@RequestBody User user){
+    public ResponseEntity<UserResponse> editUser(@RequestBody User user){
         return ResponseEntity.ok(userService.editUser(user));
     }
 
