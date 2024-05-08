@@ -1,5 +1,6 @@
 package com.example.book.store.rest.service;
 
+import com.example.book.store.rest.dto.BookDTO;
 import com.example.book.store.rest.entity.Book;
 import com.example.book.store.rest.response.MultipleResponse;
 import com.example.book.store.rest.response.SingleResponse;
@@ -12,7 +13,7 @@ public interface BookService {
 
     SingleResponse<Book> findBookByTitle(String title);
 
-    SingleResponse<Book> updateBook(Book book);
+    SingleResponse<Book> updateBook(BookDTO bookDTO, Book book);
 
     void deleteBook(Book book);
 
