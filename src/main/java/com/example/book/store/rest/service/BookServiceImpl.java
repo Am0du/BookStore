@@ -1,6 +1,8 @@
 package com.example.book.store.rest.service;
 
+import com.example.book.store.rest.dto.BookDTO;
 import com.example.book.store.rest.entity.Book;
+import com.example.book.store.rest.exception.BookDoesNotExist;
 import com.example.book.store.rest.repository.BookRepository;
 import com.example.book.store.rest.response.MultipleResponse;
 import com.example.book.store.rest.response.SingleResponse;
@@ -47,7 +49,11 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public MultipleResponse<Book> findBookByGenre(String genre) {
-        return multipleResponse(bookRepository.findByGenre(genre), true);
+        List<Book> book = bookRepository.findByGenre(genre);
+        if (book != null)
+            return multipleResponse(book, true);
+
+        throw new BookDoesNotExist("Books with "+ genre + " does not exist");
     }
 
     @Override
@@ -57,11 +63,19 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public SingleResponse<Book> findBookByTitle(String title) {
-        return singleResponse(bookRepository.findByTitle(title), true);
+        Book book = bookRepository.findByTitle(title);
+        if (book != null)
+            return singleResponse(book, true);
+
+        throw new BookDoesNotExist("Book " + title + " Does not Exist");
     }
 
     @Override
-    public SingleResponse<Book> updateBook(Book book) {
+    public SingleResponse<Book> updateBook(BookDTO bookDTO, Book book) {
+        book.setTitle(bookDTO.getTitle() != null ? bookDTO.getTitle() : book.getTitle());
+        book.setDescription(bookDTO.getDescription() != null ? bookDTO.getDescription() : book.getDescription());
+        book.setGenre(bookDTO.getGenre() != null ? bookDTO.getGenre() : book.getGenre());
+        book.setPurchase_link(bookDTO.getPurchase_link() != null ? bookDTO.getPurchase_link() : book.getPurchase_link());
         return singleResponse(bookRepository.save(book), true);
     }
 
