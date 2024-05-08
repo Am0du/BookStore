@@ -3,25 +3,24 @@ package com.example.book.store.rest.service;
 import com.example.book.store.rest.entity.Authority;
 import com.example.book.store.rest.entity.Book;
 import com.example.book.store.rest.entity.User;
-import com.example.book.store.rest.response.MultipleResponse;
 import com.example.book.store.rest.response.SingleResponse;
-import jakarta.transaction.Transactional;
+import com.example.book.store.rest.response.UserResponse;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.Map;
+import java.util.List;
 
 public interface UserService extends UserDetailsService{
 
-    MultipleResponse<User> findAllUsers();
-    SingleResponse<User> findUser(String email);
+    List<UserResponse> findAllUsers();
+    UserResponse findUser(String email);
 
-    SingleResponse<User> addUser(User user);
+    UserResponse addUser(User user);
 
-    SingleResponse<User> editUser(User user);
+    UserResponse editUser(User user);
 
-    SingleResponse<User> addBookToUser(String userEmail, Book book);
+    UserResponse addBookToUser(String userEmail, Book book);
 
     SingleResponse<User> deleteUser(String email);
 
-    SingleResponse<User> addAuthorityToUser(String userEmail, Authority authority);
+    UserResponse addAuthorityToUser(String userEmail, Authority authority);
 }
