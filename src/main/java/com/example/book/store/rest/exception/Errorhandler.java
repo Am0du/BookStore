@@ -63,4 +63,22 @@ public class Errorhandler {
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleException(BookEditNotPermitted exc) {
+        errorResponse.setMessage(exc.getMessage());
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setTimestamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleException(BookDoesNotExist exc) {
+        errorResponse.setMessage(exc.getMessage());
+        errorResponse.setStatus(HttpStatus.NO_CONTENT.value());
+        errorResponse.setTimestamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }
