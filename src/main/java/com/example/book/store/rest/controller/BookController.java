@@ -28,7 +28,7 @@ public class BookController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @GetMapping("books")
+    @GetMapping("/books")
     public ResponseEntity<MultipleResponse<Book>> allbooks() {
         return ResponseEntity.ok(bookService.findAllBooks());
     }
