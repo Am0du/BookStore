@@ -9,5 +9,6 @@ public interface CommentService {
 
     SingleResponse<Comment> addComment(Comment comment);
 
+    SingleResponse<Comment> editComment(Comment comment);
     void deleteComment(Comment comment);
 }
