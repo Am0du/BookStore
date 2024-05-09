@@ -1,5 +1,6 @@
 package com.example.book.store.rest.exception;
 
+import com.example.book.store.rest.dto.CommentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,6 +76,15 @@ public class Errorhandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(BookDoesNotExist exc) {
+        errorResponse.setMessage(exc.getMessage());
+        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+        errorResponse.setTimestamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleException(CommentNotFound exc) {
         errorResponse.setMessage(exc.getMessage());
         errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
         errorResponse.setTimestamp(System.currentTimeMillis());
