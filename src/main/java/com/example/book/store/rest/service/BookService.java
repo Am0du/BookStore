@@ -5,6 +5,8 @@ import com.example.book.store.rest.entity.Book;
 import com.example.book.store.rest.response.MultipleResponse;
 import com.example.book.store.rest.response.SingleResponse;
 
+import java.util.Optional;
+
 public interface BookService {
 
     MultipleResponse<Book> findAllBooks();
@@ -14,6 +16,8 @@ public interface BookService {
     SingleResponse<Book> findBookByTitle(String title);
 
     SingleResponse<Book> updateBook(BookDTO bookDTO, Book book);
+
+    Book findBookById(long id);
 
     void deleteBook(Book book);
 
