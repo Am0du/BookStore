@@ -50,7 +50,7 @@ public class BookServiceImpl implements BookService{
     @Override
     public MultipleResponse<Book> findBookByGenre(String genre) {
         List<Book> book = bookRepository.findByGenre(genre);
-        if (book != null)
+        if (!book.isEmpty())
             return multipleResponse(book, true);
 
         throw new BookDoesNotExist("Books with "+ genre + " does not exist");
