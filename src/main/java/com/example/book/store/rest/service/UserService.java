@@ -22,5 +22,7 @@ public interface UserService extends UserDetailsService{
 
     SingleResponse<User> deleteUser(String email);
 
+    User getUser(String email);
+
     UserResponse addAuthorityToUser(String userEmail, Authority authority);
 }

@@ -175,4 +175,13 @@ public class UserServiceImpl implements UserService {
         return singleResponse(user, true);
 
     }
+
+    @Override
+    public User getUser(String email) {
+        User user = userRepository.findByEmail(email);
+        if(user != null)
+            return user;
+
+        throw new UserNotFound("User with email address " + email + " not found");
+    }
 }
