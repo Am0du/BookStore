@@ -21,10 +21,10 @@ public class Errorhandler {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(UserDoesNotHaveAuthority exc){
         errorResponse.setMessage(exc.getMessage());
-        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+        errorResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
         errorResponse.setTimestamp(System.currentTimeMillis());
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler
@@ -58,27 +58,27 @@ public class Errorhandler {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(InvalidRole exc) {
         errorResponse.setMessage(exc.getMessage());
-        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
         errorResponse.setTimestamp(System.currentTimeMillis());
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(BookEditNotPermitted exc) {
         errorResponse.setMessage(exc.getMessage());
-        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
         errorResponse.setTimestamp(System.currentTimeMillis());
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(BookDoesNotExist exc) {
         errorResponse.setMessage(exc.getMessage());
-        errorResponse.setStatus(HttpStatus.NO_CONTENT.value());
+        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
         errorResponse.setTimestamp(System.currentTimeMillis());
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }
