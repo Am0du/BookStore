@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService{
@@ -77,6 +78,14 @@ public class BookServiceImpl implements BookService{
         book.setGenre(bookDTO.getGenre() != null ? bookDTO.getGenre() : book.getGenre());
         book.setPurchase_link(bookDTO.getPurchase_link() != null ? bookDTO.getPurchase_link() : book.getPurchase_link());
         return singleResponse(bookRepository.save(book), true);
+    }
+
+    @Override
+    public Book findBookById(long id) {
+        Book book = bookRepository.findById((int) id).orElse(null);
+        if(book != null)
+            return book;
+        throw new BookDoesNotExist("Book with id " + id + " does not exist.");
     }
 
     @Override
