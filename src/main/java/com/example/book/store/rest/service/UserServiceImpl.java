@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
             if(user != null)
                 return userResponse(userRepository.findByEmail(email));
 
-            throw new UserNotFound("User with email address");
+            throw new UserNotFound("User with email address " + email + " not found");
 
     }
 
