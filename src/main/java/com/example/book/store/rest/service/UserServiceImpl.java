@@ -1,5 +1,6 @@
 package com.example.book.store.rest.service;
 
+import com.example.book.store.rest.dto.UserDTO;
 import com.example.book.store.rest.entity.Authority;
 import com.example.book.store.rest.entity.Book;
 import com.example.book.store.rest.entity.User;
@@ -8,8 +9,9 @@ import com.example.book.store.rest.exception.UserNotFound;
 import com.example.book.store.rest.repository.UserRepository;
 import com.example.book.store.rest.response.SingleResponse;
 import com.example.book.store.rest.response.UserResponse;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,6 +35,8 @@ public class UserServiceImpl implements UserService {
     private UserResponse userResponse;
 
     public UserServiceImpl(){}
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
 
     @Autowired
@@ -68,6 +72,7 @@ public class UserServiceImpl implements UserService {
     private List<UserResponse> userResponseMultipleResponse(List<User> users) {
         List <UserResponse> userResponses = new ArrayList<UserResponse>();
         for(User user: users) {
+            UserResponse userResponse = new UserResponse();
             userResponse.setFirstName(user.getFirstName());
             userResponse.setMiddleName(user.getMiddleName());
             userResponse.setLastName(user.getLastName());
@@ -80,7 +85,6 @@ public class UserServiceImpl implements UserService {
 
             userResponses.add(userResponse);
         }
-
         return userResponses;
     }
     private String encryptPassword(String password){
@@ -111,7 +115,7 @@ public class UserServiceImpl implements UserService {
             newUser.setPassword(encryptPassword(newUser.getPassword()));
             return userResponse(newUser);
         }catch (Exception  exc){
-            throw new UserDataNotComplete(exc.getMessage());
+            throw new UserDataNotComplete("Email with " + user.getEmail() + " already exist");
         }
     }
 
@@ -131,7 +135,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponse editUser(User user) {
+    public UserResponse editUser(UserDTO user) {
         try {
             User existingUser = userRepository.findByEmail(user.getEmail());
             existingUser.setFirstName(user.getFirstName() != null ? user.getFirstName() : existingUser.getFirstName());
