@@ -1,10 +1,12 @@
 package com.example.book.store.rest.service;
 
+import com.example.book.store.rest.dto.UserDTO;
 import com.example.book.store.rest.entity.Authority;
 import com.example.book.store.rest.entity.Book;
 import com.example.book.store.rest.entity.User;
 import com.example.book.store.rest.response.SingleResponse;
 import com.example.book.store.rest.response.UserResponse;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -16,7 +18,7 @@ public interface UserService extends UserDetailsService{
 
     UserResponse addUser(User user);
 
-    UserResponse editUser(User user);
+    UserResponse editUser(UserDTO user);
 
     UserResponse addBookToUser(String userEmail, Book book);
 
