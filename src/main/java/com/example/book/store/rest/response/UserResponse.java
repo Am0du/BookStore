@@ -104,4 +104,15 @@ public class UserResponse {
     public void setAuthority(List<Authority> authority) {
         this.authority = authority;
     }
+
+    @Override
+    public String toString() {
+        return "UserResponse{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
