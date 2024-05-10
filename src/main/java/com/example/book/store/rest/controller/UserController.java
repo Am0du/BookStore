@@ -1,8 +1,10 @@
 package com.example.book.store.rest.controller;
 
 
+import com.example.book.store.rest.dto.UserDTO;
 import com.example.book.store.rest.entity.Authority;
 import com.example.book.store.rest.entity.User;
+import com.example.book.store.rest.exception.UserDoesNotHaveAuthority;
 import com.example.book.store.rest.response.JwtAuthResponse;
 import com.example.book.store.rest.response.MultipleResponse;
 import com.example.book.store.rest.response.SingleResponse;
@@ -84,14 +86,14 @@ public class UserController {
 
     }
 
-//    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/users")
     public List<UserResponse> getalluser(){
         return userService.findAllUsers();
 
     }
 
-//    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/users/{email}")
     public ResponseEntity<UserResponse> user(@PathVariable String email){
         return  ResponseEntity.ok(userService.findUser(email));
@@ -100,8 +102,13 @@ public class UserController {
 
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/users")
-    public ResponseEntity<UserResponse> editUser(@RequestBody User user){
-        return ResponseEntity.ok(userService.editUser(user));
+    public ResponseEntity<UserResponse> editUser(@RequestHeader("Authorization") String headerValue, @RequestBody UserDTO user){
+        String email = jwtTokenProvider.getEmail(headerValue.substring(7));
+        if (email.equals(user.getEmail()) || user.getEmail() == null) {
+            user.setEmail(email);
+            return ResponseEntity.ok(userService.editUser(user));
+        }
+        throw new UserDoesNotHaveAuthority("You can only change your detail");
     }
 
     @PreAuthorize("hasRole('USER')")
