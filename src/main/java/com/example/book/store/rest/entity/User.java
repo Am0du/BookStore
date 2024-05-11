@@ -1,11 +1,8 @@
 package com.example.book.store.rest.entity;
 
-import com.example.book.store.rest.repository.AuthorityRepository;
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import java.util.List;
 
