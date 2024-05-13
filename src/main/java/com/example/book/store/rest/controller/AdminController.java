@@ -6,6 +6,7 @@ import com.example.book.store.rest.entity.User;
 import com.example.book.store.rest.exception.UserNotFound;
 import com.example.book.store.rest.response.SingleResponse;
 import com.example.book.store.rest.response.UserResponse;
+import com.example.book.store.rest.security.JwtTokenProvider;
 import com.example.book.store.rest.service.AuthorityService;
 import com.example.book.store.rest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,13 @@ public class AdminController {
     private final UserService userService;
     private final AuthorityService authorityService;
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Autowired
-    public AdminController(UserService userService, AuthorityService authorityService) {
+    public AdminController(UserService userService, AuthorityService authorityService, JwtTokenProvider jwtTokenProvider) {
         this.userService = userService;
         this.authorityService = authorityService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -56,9 +60,9 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/admin/delete-user")
-    public ResponseEntity<?> deleteUser(@RequestBody String email){
-        userService.deleteUser(email);
-        return ResponseEntity.ok("User " + email + "has been delete");
+    public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") String headerValue){
+        userService.deleteUser(jwtTokenProvider.getEmail(headerValue.substring(7)));
+        return ResponseEntity.ok("User " + jwtTokenProvider.getEmail(headerValue.substring(7)) +" has been delete");
     }
 
 }
