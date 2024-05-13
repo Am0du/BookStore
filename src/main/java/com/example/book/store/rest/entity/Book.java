@@ -95,10 +95,10 @@ public class Book {
         return comment;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
+    public String getUploadUser() {
+        return user.getLastName();
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
