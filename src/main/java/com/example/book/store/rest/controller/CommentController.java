@@ -49,7 +49,7 @@ public class CommentController {
     @PutMapping("/comment")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> editComment(@RequestHeader("Authorization") String headerValue, @RequestBody CommentDTO commentDTO) {
-        User user = userService.getUser(jwtTokenProvider.getEmail(headerValue).substring(7));
+        User user = userService.getUser(jwtTokenProvider.getEmail(headerValue.substring(7)));
         for (Comment userComment : user.getComments()) {
             if (userComment.getId() == commentDTO.getCommentId()) {
                 userComment.setMessage(commentDTO.getComment());
@@ -62,7 +62,7 @@ public class CommentController {
     @DeleteMapping("/comment/{commentId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> deleteComment(@RequestHeader("Authorization") String headerValue, @PathVariable long commentId){
-        User user = userService.getUser(jwtTokenProvider.getEmail(headerValue).substring(7));
+        User user = userService.getUser(jwtTokenProvider.getEmail(headerValue.substring(7)));
         for (Comment userComment : user.getComments()) {
             if (userComment.getId() == commentId) {
                 commentService.deleteComment(userComment);
