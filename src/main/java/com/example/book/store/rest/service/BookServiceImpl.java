@@ -2,6 +2,7 @@ package com.example.book.store.rest.service;
 
 import com.example.book.store.rest.dto.BookDTO;
 import com.example.book.store.rest.entity.Book;
+import com.example.book.store.rest.exception.BookAlreadyExist;
 import com.example.book.store.rest.exception.BookDoesNotExist;
 import com.example.book.store.rest.repository.BookRepository;
 import com.example.book.store.rest.response.MultipleResponse;
