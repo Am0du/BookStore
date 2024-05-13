@@ -10,10 +10,13 @@ import com.example.book.store.rest.security.JwtTokenProvider;
 import com.example.book.store.rest.service.BookService;
 import com.example.book.store.rest.service.CommentService;
 import com.example.book.store.rest.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.Optional;
 
@@ -26,6 +29,7 @@ public class CommentController {
     private JwtTokenProvider jwtTokenProvider;
 
     private UserService userService;
+    private static Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
 
     public CommentController(BookService bookService, CommentService commentService, JwtTokenProvider jwtTokenProvider, UserService userService) {
         this.bookService = bookService;
@@ -38,8 +42,8 @@ public class CommentController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addComment(@RequestHeader("Authorization") String headerValue, @RequestBody CommentDTO commentDTO) {
         Book book = bookService.findBookById(commentDTO.getBookId());
-        User user = userService.getUser(jwtTokenProvider.getEmail(headerValue).substring(7));
-        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.addComment(new Comment(commentDTO.getComment(), user, book)));
+        User user = userService.getUser(jwtTokenProvider.getEmail(headerValue.substring(7)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.addComment(new Comment(commentDTO.getComment(), commentDTO.getTitle(), user, book)));
     }
 
     @PutMapping("/comment")
