@@ -60,13 +60,13 @@ public class BookController {
             if(book.getId() == bookDTO.getId())
                 return ResponseEntity.ok(bookService.updateBook(bookDTO, book));
             }
-        throw new BookEditNotPermitted("User "+ headerValue.substring(7) +
-                "does not own the book " +
+        throw new BookEditNotPermitted("User "+ jwtTokenProvider.getEmail(headerValue.substring(7)) +
+                " does not own the book " +
                 bookDTO.getTitle() + " or book does not exist");
         }
 
-    @DeleteMapping("/books")
-    @PreAuthorize("hasRole('USER/{bookId}')")
+    @DeleteMapping("/books/{bookId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> deleteBook(@PathVariable long bookId, @RequestHeader("Authorization") String headerValue){
         UserResponse user = userService.findUser(jwtTokenProvider.getEmail(headerValue.substring(7)));
         for(Book book : user.getBooks()){
