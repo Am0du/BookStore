@@ -14,6 +14,9 @@ public class Comment {
     @Column(name = "message")
     private String message;
 
+    @Column(name = "title")
+    private String title;
+
     @ManyToOne
     private User user;
 
@@ -23,8 +26,9 @@ public class Comment {
 
     public Comment(){}
 
-    public Comment(String message, User user, Book book) {
+    public Comment(String message,String title, User user, Book book) {
         this.message = message;
+        this.title = title;
         this.user = user;
         this.book = book;
     }
@@ -65,12 +69,32 @@ public class Comment {
         this.user = user;
     }
 
-    public Book getBook() {
-        return book;
+    public String getBookTitle() {
+        return book.getTitle();
+    }
+
+    public long getBookId() {
+        return book.getId();
+    }
+
+    public String getBookDescription() {
+        return book.getDescription();
+    }
+
+    public String getBookPurchaseLink(){
+        return book.getPurchase_link();
     }
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
