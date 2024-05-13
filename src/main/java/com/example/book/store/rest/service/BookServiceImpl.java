@@ -61,13 +61,8 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public SingleResponse<Book> addBook(Book book) {
-        try{
             return singleResponse(bookRepository.save(book), true);
-        }catch (DataIntegrityViolationException ex){
-            throw new BookAlreadyExist("Book with title "+ book.getTitle() +" already exist.");
-        }
     }
-
     @Override
     public SingleResponse<Book> findBookByTitle(String title) {
         Book book = bookRepository.findByTitle(title);
