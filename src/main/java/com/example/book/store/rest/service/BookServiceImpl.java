@@ -7,6 +7,7 @@ import com.example.book.store.rest.repository.BookRepository;
 import com.example.book.store.rest.response.MultipleResponse;
 import com.example.book.store.rest.response.SingleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,7 +60,11 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public SingleResponse<Book> addBook(Book book) {
-        return singleResponse(bookRepository.save(book), true);
+        try{
+            return singleResponse(bookRepository.save(book), true);
+        }catch (DataIntegrityViolationException ex){
+            throw new BookAlreadyExist("Book with title "+ book.getTitle() +" already exist.");
+        }
     }
 
     @Override
