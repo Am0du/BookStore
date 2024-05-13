@@ -2,17 +2,19 @@ package com.example.book.store.rest.response;
 
 import org.springframework.stereotype.Component;
 
+import java.time.OffsetDateTime;
+
 @Component
 public class ErrorResponse {
 
     private int status;
     private String message;
 
-    private long timestamp;
+    private OffsetDateTime timestamp;
 
     public ErrorResponse(){}
 
-    public ErrorResponse(int status, String message, long timestamp) {
+    public ErrorResponse(int status, String message, OffsetDateTime timestamp) {
         this.status = status;
         this.message = message;
         this.timestamp = timestamp;
@@ -34,11 +36,11 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    public long getTimestamp() {
+    public OffsetDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
     }
 }
