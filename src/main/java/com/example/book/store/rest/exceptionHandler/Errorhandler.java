@@ -1,5 +1,6 @@
-package com.example.book.store.rest.exception;
+package com.example.book.store.rest.exceptionHandler;
 
+import com.example.book.store.rest.exception.*;
 import com.example.book.store.rest.response.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
